@@ -1,0 +1,21 @@
+language: minimal
+
+services:
+    - docker
+
+env:
+    global:
+        - REPO_monero="donnellans/monero-docker" Dir_monero="${TRAVIS_BUILD_DIR}" CONTAINER_monero="test-monero"
+      
+before_install:
+    - docker pull debian:stable-slim
+    - docker build -f "${Dir_monero}/Dockerfile" -t ${REPO_monero} ${Dir_monero}
+
+script:
+    - docker run --name "${CONTAINER_monero}" ${REPO_monero}
+
+after_error:
+    - docker logs ${CONTAINER_monero}
+
+after_failure:
+    - docker logs ${CONTAINER_monero}
