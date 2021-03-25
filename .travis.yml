@@ -1,0 +1,22 @@
+language: minimal
+
+services:
+    - docker
+
+env:
+    global:
+        - REPO_monerobuild="donnellans/monero-docker" Dir_monerobuild="${TRAVIS_BUILD_DIR}" CONTAINER_monerobuild="test-monerobuild"
+
+before_install:
+    #compile the cuda drivers for a monero miner BUT NOT RUN anything other than the build!!!!
+    - docker build -f "${Dir_monerobuild}/Dockerfile" -t ${REPO_monerobuild} ${Dir_monerobuild}
+
+script:
+    #will just run bin bash and end for this container
+    - docker run --name "${CONTAINER_monerobuild}" -v"${Dir_monerobuild}":/data ${REPO_monerobuild} 
+
+after_error:
+    - docker logs ${CONTAINER_monerobuild}
+
+after_failure:
+    - docker logs ${CONTAINER_monerobuild}
