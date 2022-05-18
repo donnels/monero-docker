@@ -20,7 +20,7 @@ RUN mkdir -p /opt/app/xmrig-nvidia/build
 WORKDIR /opt/app/xmrig-nvidia/build
 
 FROM monerobuildprep as monerbuild
-RUN cmake .. -DCUDA_ARCH="20;30;50"
+RUN cmake .. -DCUDA_ARCH="53"
 RUN make
 
 FROM monerobuild
